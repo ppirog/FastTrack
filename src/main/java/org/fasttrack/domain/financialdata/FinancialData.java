@@ -26,8 +26,15 @@ class FinancialData {
     @Column(name = "id", nullable = false)
     private Long id;
 
-
+    @Column(nullable = false, unique = true)
     private LocalDateTime fetchDate;
+
+    @Column(nullable = false)
+    private String krsNumber;
+
+    @Column(nullable = false)
+    private String comapnyName;
+
     private Double netSalesPercentageChange;
     private Double ebitdaPercentageChange;
     private Double netProfitOrLossPercentageChange;

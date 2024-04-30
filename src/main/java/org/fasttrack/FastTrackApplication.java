@@ -30,6 +30,6 @@ public class FastTrackApplication {
         );
 
         log.warn(jsoupAleo.fetchFinancialDataByCompanyName(
-                "ITSHARKZ SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ"));
+                "QODECA SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ"));
     }
 }

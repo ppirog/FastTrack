@@ -2,7 +2,9 @@ package org.fasttrack.domain.financialdata;
 
 import org.fasttrack.domain.financialdata.dto.server.FinancialDataResponseFromServerDto;
 
+import java.util.Optional;
+
 public interface FinancialDataFetchable {
 
-    FinancialDataResponseFromServerDto fetchFinancialDataByCompanyName(String name);
+    Optional<FinancialDataResponseFromServerDto> fetchFinancialDataByCompanyName(String name);
 }

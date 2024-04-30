@@ -4,6 +4,9 @@ import lombok.Builder;
 
 @Builder
 public record FinancialDataResponseFromServerDto(
+        String krsNumber,
+        String companyName,
+
         String netSalesPercentageChange,
         String ebitdaChangePercentageChange,
         String netProfitOrLossPercentageChange,
