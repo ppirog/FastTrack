@@ -1,6 +1,6 @@
 package org.fasttrack.infrastrucutre.financialdata.webscrap;
 
-class CompanyNameStringParser {
+public class CompanyNameStringParser {
 
 
     public String parseCompanyName(String name) {
@@ -18,6 +18,8 @@ class CompanyNameStringParser {
                 .replace("ź", "z")
                 .replace("ż", "z")
                 .replace(" ", "-")
+                .replace("\"", "")
+                .replace("\\", "")
         ;
         return name;
     }

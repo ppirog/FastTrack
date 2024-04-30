@@ -21,7 +21,7 @@ class CompanyNameStringParserTest {
             "INNA FIRMA, inna-firma",
             "ą, a",
             "ąćęłńóśź   ż, acelnosz---z",
-            "ĄĆĘŁŃÓŚŹ   Ż, acelnosz---z",
+            "ĄĆĘŁŃÓŚ\\\"Ź   Ż, acelnosz---z",
             "MIKROBIT SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, mikrobit-spolka-z-ograniczona-odpowiedzialnoscia",
             "QODECA SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ, qodeca-spolka-z-ograniczona-odpowiedzialnoscia",
 
