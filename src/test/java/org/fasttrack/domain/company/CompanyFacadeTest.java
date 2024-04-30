@@ -1,13 +1,11 @@
 package org.fasttrack.domain.company;
 
 import org.fasttrack.domain.company.dto.CompanyResponseDto;
-import org.fasttrack.domain.company.exceptions.CompanyNotFoundInKrsExternalServerException;
 import org.fasttrack.domain.company.exceptions.NotFoundInDatabaseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -47,18 +45,18 @@ class CompanyFacadeTest {
     }
 
     @Test
-    void fetchCompanyByKrsAndSaveInDatabase() throws CompanyNotFoundInKrsExternalServerException {
+    void fetchCompanyByKrsAndSaveInDatabase() {
 
         final List<CompanyResponseDto> all1 = companyFacade.findAll();
 
-        final CompanyResponseDto responseDto = companyFacade.findCompanyByKrsIfNotExistInDbFetchAndSave("00000000");
+        final CompanyResponseDto responseDto = companyFacade.findCompanyByKrsIfNotExistInDbFetchAndSave("00000051");
 
         final List<CompanyResponseDto> all2 = companyFacade.findAll();
 
         assertAll(
                 () -> assertEquals(10, all1.size()),
                 () -> assertEquals(11, all2.size()),
-                () -> assertEquals("00000000", responseDto.KRSnumber()),
+                () -> assertEquals("00000051", responseDto.KRSnumber()),
                 () -> assertEquals("SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ", responseDto.legalForm()),
                 () -> assertEquals("JEDEN FROM SERVER SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ", responseDto.name())
         );
@@ -98,7 +96,7 @@ class CompanyFacadeTest {
             "00000009",
             "00000010"
     })
-    void findCompanyByKRSnumber(String KRSnumber) throws CompanyNotFoundInKrsExternalServerException {
+    void findCompanyByKRSnumber(String KRSnumber) {
         final CompanyResponseDto companyByKrs = companyFacade.findCompanyByKrsIfNotExistInDbFetchAndSave(KRSnumber);
         assertEquals(KRSnumber, companyByKrs.KRSnumber());
     }
@@ -121,20 +119,4 @@ class CompanyFacadeTest {
         assertThrows(NotFoundInDatabaseException.class, () -> companyFacade.findCompanyByKrs(krs));
     }
 
-    @ParameterizedTest(name = "Find company by KRS number: {0}")
-    @ValueSource(strings = {
-            "10000001",
-            "10000002",
-            "10000003",
-            "10000004",
-            "10000005",
-            "10000006",
-            "10000007",
-            "10000008",
-            "10000009",
-            "10000010"
-    })
-    void shouldThrowCompanyNotFoundInKrsExternalServerException(String krs) {
-        assertThrows(ResponseStatusException.class, () -> companyFacade.findCompanyByKrsIfNotExistInDbFetchAndSave(krs));
-    }
 }

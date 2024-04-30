@@ -1,7 +1,6 @@
 package org.fasttrack.domain.company;
 
 import org.fasttrack.domain.company.dto.server.CompanyResponseFromServerDto;
-import org.fasttrack.domain.company.exceptions.CompanyNotFoundInKrsExternalServerException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
