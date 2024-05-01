@@ -7,11 +7,13 @@ import org.fasttrack.domain.company.dto.CompanyResponseDto;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
 import org.fasttrack.domain.financialdata.dto.server.FinancialDataResponseFromServerDto;
 import org.fasttrack.domain.financialdata.exceptions.NotFoundInRemoteServerException;
+import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.List;
 
 @Log4j2
 @AllArgsConstructor
+@Component
 public class FinancialDataFacade {
 
     private final CompanyFacade companyFacade;
@@ -32,15 +34,15 @@ public class FinancialDataFacade {
         log.info(entityFromServer);
 
 
-        final Optional<FinancialData> byKRSnumberFromDatabase = financialDataRepository.findByKRSnumber(entityFromServer.getKrsNumber());
+        List<FinancialData> byKRSnumberFromDatabase = financialDataRepository.findByKrsNumberOrderByFetchDateDesc(entityFromServer.getKrsNumber());
 
         FinancialData saved = null;
-        if (byKRSnumberFromDatabase.isPresent()) {
-            if (!byKRSnumberFromDatabase.get().equals(entityFromServer)) {
+        if (!byKRSnumberFromDatabase.isEmpty()) {
+            if (!byKRSnumberFromDatabase.get(0).areEqualDataExceptFetchDateAndId(entityFromServer)) {
                 saved = financialDataRepository.save(entityFromServer);
                 log.info("Saving to database: {}", saved);
             } else {
-                saved = byKRSnumberFromDatabase.get();
+                saved = byKRSnumberFromDatabase.get(0);
             }
         } else {
             saved = financialDataRepository.save(entityFromServer);

@@ -1,5 +1,8 @@
 package org.fasttrack.infrastrucutre.financialdata.webscrap;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CompanyNameStringParser {
 
 

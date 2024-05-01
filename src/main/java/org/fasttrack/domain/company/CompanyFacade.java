@@ -8,6 +8,7 @@ import org.fasttrack.domain.company.dto.CompanyResponseDto;
 import org.fasttrack.domain.company.dto.server.CompanyResponseFromServerDto;
 import org.fasttrack.domain.company.exceptions.NotFoundInDatabaseException;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @AllArgsConstructor
+@Component
 public class CompanyFacade {
 
     private final CompanyRepository companyRepository;

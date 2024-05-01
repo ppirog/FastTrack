@@ -1,14 +1,18 @@
 package org.fasttrack.domain.financialdata;
 
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 
-interface FinancialDataRepository {
+@Repository
+interface FinancialDataRepository extends JpaRepository<FinancialData,Long> {
     FinancialData save(FinancialData financialData);
     Optional<FinancialData> findById(Long id);
-    Optional<FinancialData> findByName(String name);
-    Optional<FinancialData> findByKRSnumber(String KRSnumber);
+    Optional<FinancialData> findByComapnyName(String name);
+    List<FinancialData> findByKrsNumberOrderByFetchDateDesc(String KRSnumber);
     List<FinancialData> findAll();
-    void delete(Long id);
+    void deleteById(Long id);
 }

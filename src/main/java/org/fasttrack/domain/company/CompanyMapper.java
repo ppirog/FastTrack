@@ -3,8 +3,10 @@ package org.fasttrack.domain.company;
 import lombok.AllArgsConstructor;
 import org.fasttrack.domain.company.dto.CompanyResponseDto;
 import org.fasttrack.domain.company.dto.server.CompanyResponseFromServerDto;
+import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
+@Component
 class CompanyMapper {
 
     public Company toCompany(CompanyResponseFromServerDto companyResponseFromServerDto) {

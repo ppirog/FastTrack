@@ -3,6 +3,7 @@ package org.fasttrack.domain.financialdata;
 import lombok.AllArgsConstructor;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
 import org.fasttrack.domain.financialdata.dto.server.FinancialDataResponseFromServerDto;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
