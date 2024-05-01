@@ -36,7 +36,7 @@ public class FinancialDataFacade {
 
         List<FinancialData> byKRSnumberFromDatabase = financialDataRepository.findByKrsNumberOrderByFetchDateDesc(entityFromServer.getKrsNumber());
 
-        FinancialData saved = null;
+        FinancialData saved;
         if (!byKRSnumberFromDatabase.isEmpty()) {
             if (!byKRSnumberFromDatabase.get(0).areEqualDataExceptFetchDateAndId(entityFromServer)) {
                 saved = financialDataRepository.save(entityFromServer);

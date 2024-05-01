@@ -2,7 +2,6 @@ package org.fasttrack.infrastrucutre.company.error;
 
 import lombok.extern.log4j.Log4j2;
 import org.fasttrack.domain.company.exceptions.NotFoundInDatabaseException;
-import org.fasttrack.domain.financialdata.exceptions.NotFoundInRemoteServerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

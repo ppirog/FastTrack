@@ -152,7 +152,7 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
                     nameToProcess = name.split(" ")[0] + "-sp-z-oo";
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
 
