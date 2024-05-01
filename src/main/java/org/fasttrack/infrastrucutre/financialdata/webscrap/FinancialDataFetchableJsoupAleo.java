@@ -34,7 +34,7 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
         String nameToProcess = name;
 
         int count = 0;
-        while(count < 4){
+        while (count < 4) {
             try {
 
                 final String parsedCompanyName = companyNameStringParser.parseCompanyName(nameToProcess);
@@ -123,6 +123,14 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
                     log.info("Total assets: {}", totalAssets);
                 }
 
+                if (
+                        netSales.isEmpty() ||
+                                ebitda.isEmpty() ||
+                                netProfitOrLoss.isEmpty()
+                ) {
+                    return Optional.empty();
+                }
+
                 return Optional.ofNullable(FinancialDataResponseFromServerDto.builder()
                         .companyName(name)
                         .krsNumber(krsText)
@@ -136,7 +144,7 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
 
             } catch (HttpStatusException e) {
                 count++;
-                if(count == 1){
+                if (count == 1) {
                     nameToProcess = name.split(" ")[0];
                 } else if (count == 2) {
                     nameToProcess = name.split(" ")[0] + "-sp-zoo";
