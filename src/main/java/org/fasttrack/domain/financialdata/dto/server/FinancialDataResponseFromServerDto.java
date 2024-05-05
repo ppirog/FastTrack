@@ -2,16 +2,18 @@ package org.fasttrack.domain.financialdata.dto.server;
 
 import lombok.Builder;
 
+import java.util.List;
+
 @Builder
 public record FinancialDataResponseFromServerDto(
         String krsNumber,
         String companyName,
 
-        String netSalesPercentageChange,
-        String ebitdaChangePercentageChange,
-        String netProfitOrLossPercentageChange,
-        String liabilitedAndProvisionsPercentageChange,
-        String equityPercentageChange,
-        String totalAssetsPercentageChange
+        List<String> netSalesPercentageChange,
+        List<String>  ebitdaChangePercentageChange,
+        List<String>  netProfitOrLossPercentageChange,
+        List<String>  liabilitedAndProvisionsPercentageChange,
+        List<String>  equityPercentageChange,
+        List<String>  totalAssetsPercentageChange
 ) {
 }

@@ -12,32 +12,36 @@ class FinancialDataMapper {
     private final LocalDateTime dateTime;
 
     public FinancialData toEntity(FinancialDataResponseFromServerDto dto){
+
+
         return FinancialData.builder()
                 .fetchDate(dateTime)
                 .comapnyName(dto.companyName())
                 .krsNumber(dto.krsNumber())
-                .netSalesPercentageChange(Double.valueOf(dto.netSalesPercentageChange()))
-                .ebitdaPercentageChange(Double.valueOf(dto.ebitdaChangePercentageChange()))
-                .netProfitOrLossPercentageChange(Double.valueOf(dto.netProfitOrLossPercentageChange()))
-                .liabilitesAndProvisionsPercentageChange(Double.valueOf(dto.liabilitedAndProvisionsPercentageChange()))
-                .equityPercentageChange(Double.valueOf(dto.equityPercentageChange()))
-                .totalAssetsPercentageChange(Double.valueOf(dto.totalAssetsPercentageChange()))
+                .netSalesValues(dto.netSalesPercentageChange().stream().map(Double::valueOf).toList())
+                .ebitdaValues(dto.ebitdaChangePercentageChange().stream().map(Double::valueOf).toList())
+                .netProfitOrLossValues(dto.netProfitOrLossPercentageChange().stream().map(Double::valueOf).toList())
+                .liabilitesAndProvisionsValues(dto.liabilitedAndProvisionsPercentageChange().stream().map(Double::valueOf).toList())
+                .equityValues(dto.equityPercentageChange().stream().map(Double::valueOf).toList())
+                .totalAssetsValues(dto.totalAssetsPercentageChange().stream().map(Double::valueOf).toList()
+                )
                 .build();
 
         
     }
 
     public FinancialDataResponseDto toDto(FinancialData entity){
+
         return FinancialDataResponseDto.builder()
                 .fetchDate(entity.getFetchDate())
                 .krsNumber(entity.getKrsNumber())
                 .companyName(entity.getComapnyName())
-                .netSalesPercentageChange(String.valueOf(entity.getNetSalesPercentageChange()))
-                .ebitdaChangePercentageChange(String.valueOf(entity.getEbitdaPercentageChange()))
-                .netProfitOrLossPercentageChange(String.valueOf(entity.getNetProfitOrLossPercentageChange()))
-                .liabilitedAndProvisionsPercentageChange(String.valueOf(entity.getLiabilitesAndProvisionsPercentageChange()))
-                .equityPercentageChange(String.valueOf(entity.getEquityPercentageChange()))
-                .totalAssetsPercentageChange(String.valueOf(entity.getTotalAssetsPercentageChange()))
+                .netSalesValues(entity.getNetSalesValues().stream().map(String::valueOf).toList())
+                .ebitdaValues(entity.getEbitdaValues().stream().map(String::valueOf).toList())
+                .netProfitOrLossValues(entity.getNetProfitOrLossValues().stream().map(String::valueOf).toList())
+                .liabilitedAndProvisionsValues(entity.getLiabilitesAndProvisionsValues().stream().map(String::valueOf).toList())
+                .equityValues(entity.getEquityValues().stream().map(String::valueOf).toList())
+                .totalAssetsValues(entity.getTotalAssetsValues().stream().map(String::valueOf).toList())
                 .build();
     }
 }

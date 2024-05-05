@@ -3,6 +3,7 @@ package org.fasttrack.domain.financialdata.dto;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 public record FinancialDataResponseDto(
@@ -10,11 +11,11 @@ public record FinancialDataResponseDto(
         String krsNumber,
         String companyName,
 
-        String netSalesPercentageChange,
-        String ebitdaChangePercentageChange,
-        String netProfitOrLossPercentageChange,
-        String liabilitedAndProvisionsPercentageChange,
-        String equityPercentageChange,
-        String totalAssetsPercentageChange
+        List<String> netSalesValues,
+        List<String>  ebitdaValues,
+        List<String>  netProfitOrLossValues,
+        List<String>  liabilitedAndProvisionsValues,
+        List<String>  equityValues,
+        List<String>  totalAssetsValues
 ) {
 }

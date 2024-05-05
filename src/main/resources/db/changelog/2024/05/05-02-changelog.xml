@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1714934809541-1" author="ppirog (generated)">
+        <createTable tableName="financial_data_ebitda_percentage_change">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ebitda_percentage_change" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714934809541-2" author="ppirog (generated)">
+        <createTable tableName="financial_data_equity_percentage_change">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="equity_percentage_change" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714934809541-3" author="ppirog (generated)">
+        <createTable tableName="financial_data_liabilites_and_provisions_percentage_change">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="liabilites_and_provisions_percentage_change" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714934809541-4" author="ppirog (generated)">
+        <createTable tableName="financial_data_net_profit_or_loss_percentage_change">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="net_profit_or_loss_percentage_change" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714934809541-5" author="ppirog (generated)">
+        <createTable tableName="financial_data_net_sales_percentage_change">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="net_sales_percentage_change" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714934809541-6" author="ppirog (generated)">
+        <createTable tableName="financial_data_total_assets_percentage_change">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_assets_percentage_change" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714934809541-7" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id"
+                                 baseTableName="financial_data_ebitda_percentage_change"
+                                 constraintName="fk_financialdata_ebitdapercentagechange_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714934809541-8" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id"
+                                 baseTableName="financial_data_equity_percentage_change"
+                                 constraintName="fk_financialdata_equitypercentagechange_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714934809541-9" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id"
+                                 baseTableName="financial_data_net_sales_percentage_change"
+                                 constraintName="fk_financialdata_netsalespercentagechange_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714934809541-10" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id"
+                                 baseTableName="financial_data_total_assets_percentage_change"
+                                 constraintName="fk_financialdata_totalassetspercentagechange_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714934809541-11" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id"
+                                 baseTableName="financial_data_liabilites_and_provisions_percentage_change"
+                                 constraintName="fk_financialdataliabilitesandprovisionspercent_on_financialdata"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714934809541-12" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id"
+                                 baseTableName="financial_data_net_profit_or_loss_percentage_change"
+                                 constraintName="fk_financialdatanetprofitorlosspercentagechang_on_financialdata"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714934809541-14" author="ppirog (generated)">
+        <dropColumn columnName="ebitda_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="equity_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="liabilites_and_provisions_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="net_profit_or_loss_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="net_sales_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="total_assets_percentage_change" tableName="financial_data"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,6 +1,7 @@
 package org.fasttrack.domain.financialdata;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Builder
@@ -38,26 +40,43 @@ class FinancialData {
     @Column(nullable = false)
     private String comapnyName;
 
-    private Double netSalesPercentageChange;
-    private Double ebitdaPercentageChange;
-    private Double netProfitOrLossPercentageChange;
-    private Double liabilitesAndProvisionsPercentageChange;
-    private Double equityPercentageChange;
-    private Double totalAssetsPercentageChange;
+    @ElementCollection
+    private List<Double> netSalesValues;
+    @ElementCollection
+    private List<Double> ebitdaValues;
+    @ElementCollection
+    private List<Double> netProfitOrLossValues;
+    @ElementCollection
+    private List<Double> liabilitesAndProvisionsValues;
+    @ElementCollection
+    private List<Double> equityValues;
+    @ElementCollection
+    private List<Double> totalAssetsValues;
 
 
     public boolean areEqualDataExceptFetchDateAndId(FinancialData f1) {
         if (this == f1) return true;
-        if (f1 == null || getClass() != f1.getClass()) return false;
+        if (f1 == null) return false;
+        if (!this.krsNumber.equals(f1.krsNumber)) return false;
+        if (!this.comapnyName.equals(f1.comapnyName)) return false;
 
-        return Objects.equals(krsNumber, f1.krsNumber) &&
-                Objects.equals(comapnyName, f1.comapnyName) &&
-                Objects.equals(netSalesPercentageChange, f1.netSalesPercentageChange) &&
-                Objects.equals(ebitdaPercentageChange, f1.ebitdaPercentageChange) &&
-                Objects.equals(netProfitOrLossPercentageChange, f1.netProfitOrLossPercentageChange) &&
-                Objects.equals(liabilitesAndProvisionsPercentageChange, f1.liabilitesAndProvisionsPercentageChange) &&
-                Objects.equals(equityPercentageChange, f1.equityPercentageChange) &&
-                Objects.equals(totalAssetsPercentageChange, f1.totalAssetsPercentageChange);
+        if(this.netSalesValues.size() != f1.netSalesValues.size()) return false;
+        if(this.ebitdaValues.size() != f1.ebitdaValues.size()) return false;
+        if(this.netProfitOrLossValues.size() != f1.netProfitOrLossValues.size()) return false;
+        if(this.liabilitesAndProvisionsValues.size() != f1.liabilitesAndProvisionsValues.size()) return false;
+        if(this.equityValues.size() != f1.equityValues.size()) return false;
+        if(this.totalAssetsValues.size() != f1.totalAssetsValues.size()) return false;
+
+        for (int i = 0; i < this.netSalesValues.size(); i++) {
+            if (!Objects.equals(this.netSalesValues.get(i), f1.netSalesValues.get(i))) return false;
+            if (!Objects.equals(this.ebitdaValues.get(i), f1.ebitdaValues.get(i))) return false;
+            if (!Objects.equals(this.netProfitOrLossValues.get(i), f1.netProfitOrLossValues.get(i))) return false;
+            if (!Objects.equals(this.liabilitesAndProvisionsValues.get(i), f1.liabilitesAndProvisionsValues.get(i))) return false;
+            if (!Objects.equals(this.equityValues.get(i), f1.equityValues.get(i))) return false;
+            if (!Objects.equals(this.totalAssetsValues.get(i), f1.totalAssetsValues.get(i))) return false;
+        }
+
+        return true;
     }
 
 }

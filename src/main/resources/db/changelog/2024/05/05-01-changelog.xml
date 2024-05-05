@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1714934432278-1" author="ppirog (generated)">
+        <dropColumn columnName="ebitda_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="equity_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="liabilites_and_provisions_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="net_profit_or_loss_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="net_sales_percentage_change" tableName="financial_data"/>
+
+        <dropColumn columnName="total_assets_percentage_change" tableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714934432278-2" author="ppirog (generated)">
+        <addColumn tableName="financial_data">
+            <column name="ebitda_percentage_change" type="float8[]"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1714934432278-4" author="ppirog (generated)">
+        <addColumn tableName="financial_data">
+            <column name="equity_percentage_change" type="float8[]"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1714934432278-6" author="ppirog (generated)">
+        <addColumn tableName="financial_data">
+            <column name="liabilites_and_provisions_percentage_change" type="float8[]"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1714934432278-8" author="ppirog (generated)">
+        <addColumn tableName="financial_data">
+            <column name="net_profit_or_loss_percentage_change" type="float8[]"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1714934432278-10" author="ppirog (generated)">
+        <addColumn tableName="financial_data">
+            <column name="net_sales_percentage_change" type="float8[]"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="1714934432278-12" author="ppirog (generated)">
+        <addColumn tableName="financial_data">
+            <column name="total_assets_percentage_change" type="float8[]"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

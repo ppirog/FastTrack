@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1714938104164-13" author="ppirog (generated)">
+        <dropForeignKeyConstraint baseTableName="financial_data_ebitda_percentage_change"
+                                  constraintName="fk_financialdata_ebitdapercentagechange_on_financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-14" author="ppirog (generated)">
+        <dropForeignKeyConstraint baseTableName="financial_data_equity_percentage_change"
+                                  constraintName="fk_financialdata_equitypercentagechange_on_financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-15" author="ppirog (generated)">
+        <dropForeignKeyConstraint baseTableName="financial_data_net_sales_percentage_change"
+                                  constraintName="fk_financialdata_netsalespercentagechange_on_financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-16" author="ppirog (generated)">
+        <dropForeignKeyConstraint baseTableName="financial_data_total_assets_percentage_change"
+                                  constraintName="fk_financialdata_totalassetspercentagechange_on_financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-17" author="ppirog (generated)">
+        <dropForeignKeyConstraint baseTableName="financial_data_liabilites_and_provisions_percentage_change"
+                                  constraintName="fk_financialdataliabilitesandprovisionspercent_on_financialdata"/>
+    </changeSet>
+    <changeSet id="1714938104164-18" author="ppirog (generated)">
+        <dropForeignKeyConstraint baseTableName="financial_data_net_profit_or_loss_percentage_change"
+                                  constraintName="fk_financialdatanetprofitorlosspercentagechang_on_financialdata"/>
+    </changeSet>
+    <changeSet id="1714938104164-1" author="ppirog (generated)">
+        <createTable tableName="financial_data_ebitda_values">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ebitda_values" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714938104164-2" author="ppirog (generated)">
+        <createTable tableName="financial_data_equity_values">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="equity_values" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714938104164-3" author="ppirog (generated)">
+        <createTable tableName="financial_data_liabilites_and_provisions_values">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="liabilites_and_provisions_values" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714938104164-4" author="ppirog (generated)">
+        <createTable tableName="financial_data_net_profit_or_loss_values">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="net_profit_or_loss_values" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714938104164-5" author="ppirog (generated)">
+        <createTable tableName="financial_data_net_sales_values">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="net_sales_values" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714938104164-6" author="ppirog (generated)">
+        <createTable tableName="financial_data_total_assets_values">
+            <column name="financial_data_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_assets_values" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1714938104164-7" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id" baseTableName="financial_data_ebitda_values"
+                                 constraintName="fk_financialdata_ebitdavalues_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-8" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id" baseTableName="financial_data_equity_values"
+                                 constraintName="fk_financialdata_equityvalues_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-9" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id"
+                                 baseTableName="financial_data_net_profit_or_loss_values"
+                                 constraintName="fk_financialdata_netprofitorlossvalues_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-10" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id" baseTableName="financial_data_net_sales_values"
+                                 constraintName="fk_financialdata_netsalesvalues_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-11" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id" baseTableName="financial_data_total_assets_values"
+                                 constraintName="fk_financialdata_totalassetsvalues_on_financial_data"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-12" author="ppirog (generated)">
+        <addForeignKeyConstraint baseColumnNames="financial_data_id"
+                                 baseTableName="financial_data_liabilites_and_provisions_values"
+                                 constraintName="fk_financialdataliabilitesandprovisionsvalues_on_financialdata"
+                                 referencedColumnNames="id" referencedTableName="financial_data"/>
+    </changeSet>
+    <changeSet id="1714938104164-19" author="ppirog (generated)">
+        <dropTable cascadeConstraints="true" tableName="financial_data_ebitda_percentage_change"/>
+    </changeSet>
+    <changeSet id="1714938104164-20" author="ppirog (generated)">
+        <dropTable cascadeConstraints="true" tableName="financial_data_equity_percentage_change"/>
+    </changeSet>
+    <changeSet id="1714938104164-21" author="ppirog (generated)">
+        <dropTable cascadeConstraints="true" tableName="financial_data_liabilites_and_provisions_percentage_change"/>
+    </changeSet>
+    <changeSet id="1714938104164-22" author="ppirog (generated)">
+        <dropTable cascadeConstraints="true" tableName="financial_data_net_profit_or_loss_percentage_change"/>
+    </changeSet>
+    <changeSet id="1714938104164-23" author="ppirog (generated)">
+        <dropTable cascadeConstraints="true" tableName="financial_data_net_sales_percentage_change"/>
+    </changeSet>
+    <changeSet id="1714938104164-24" author="ppirog (generated)">
+        <dropTable cascadeConstraints="true" tableName="financial_data_total_assets_percentage_change"/>
+    </changeSet>
+
+</databaseChangeLog>

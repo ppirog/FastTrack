@@ -13,6 +13,8 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -80,47 +82,80 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
                 Element totalAssetsRow = doc.select("tr:contains(" + TOTAL_ASSETS + ")").first();
 
 
-                String netSales = "";
-                String ebitda = "";
-                String netProfitOrLoss = "";
-                String liabilitedAndProvisions = "";
-                String equity = "";
-                String totalAssets = "";
+                List<String> netSales = new ArrayList<>();
+                List<String>  ebitda = new ArrayList<>();
+                List<String> netProfitOrLoss  = new ArrayList<>();
+                List<String> liabilitedAndProvisions  = new ArrayList<>();
+                List<String> equity  = new ArrayList<>();
+                List<String> totalAssets  = new ArrayList<>();
 
                 if (netSalesRow != null) {
                     Elements netSalesCells = netSalesRow.select("td");
-                    netSales = getValueFromCells(netSalesCells).replace(",", ".");
+                    List<String> listOfValuesFromCells = getListOfValuesFromCells(netSalesCells);
+                    listOfValuesFromCells.forEach(s -> s.replace(",","."));
+
+                    List<String> ab = new ArrayList<>();
+                    for(String a : listOfValuesFromCells){
+                        ab.add(a.replace(",","."));
+                    }
+                    netSales.addAll(ab);
+
                     log.info("Net sales: {}", netSales);
                 }
 
                 if (ebitdaRow != null) {
                     Elements ebitdaCells = ebitdaRow.select("td");
-                    ebitda = getValueFromCells(ebitdaCells).replace(",", ".");
+                    List<String> listOfValuesFromCells = getListOfValuesFromCells(ebitdaCells);
+                    List<String> ab = new ArrayList<>();
+                    for(String a : listOfValuesFromCells){
+                        ab.add(a.replace(",","."));
+                    }
+                    ebitda.addAll(ab);
                     log.info("EBITDA: {}", ebitda);
                 }
 
                 if (netProfitLossRow != null) {
                     Elements netProfitLossCells = netProfitLossRow.select("td");
-                    netProfitOrLoss = getValueFromCells(netProfitLossCells).replace(",", ".");
+                    List<String> listOfValuesFromCells = getListOfValuesFromCells(netProfitLossCells);
+                    List<String> ab = new ArrayList<>();
+                    for(String a : listOfValuesFromCells){
+                        ab.add(a.replace(",","."));
+                    }
+                    netProfitOrLoss.addAll(ab);
                     log.info("Net profit / loss: {}", netProfitOrLoss);
                 }
 
                 if (liabilitiesRow != null) {
-                    Elements liabilitiesCells = liabilitiesRow.select("td");
-                    liabilitedAndProvisions = getValueFromCells(liabilitiesCells).replace(",", ".");
+                    Elements netProfitLossCells = liabilitiesRow.select("td");
+                    List<String> listOfValuesFromCells = getListOfValuesFromCells(netProfitLossCells);
+                    List<String> ab = new ArrayList<>();
+                    for(String a : listOfValuesFromCells){
+                        ab.add(a.replace(",","."));
+                    }
+                    liabilitedAndProvisions.addAll(ab);
                     log.info("Liabilities and provisions: {}", liabilitedAndProvisions);
                 }
 
                 if (equityRow != null) {
-                    Elements equityCells = equityRow.select("td");
-                    equity = getValueFromCells(equityCells).replace(",", ".");
+                    Elements netProfitLossCells = equityRow.select("td");
+                    List<String> listOfValuesFromCells = getListOfValuesFromCells(netProfitLossCells);
+                    List<String> ab = new ArrayList<>();
+                    for(String a : listOfValuesFromCells){
+                        ab.add(a.replace(",","."));
+                    }
+                    equity.addAll(ab);
                     log.info("Equity: {}", equity);
                 }
 
                 if (totalAssetsRow != null) {
-                    Elements totalAssetsCells = totalAssetsRow.select("td");
-                    totalAssets = getValueFromCells(totalAssetsCells).replace(",", ".");
-                    log.info("Total assets: {}", totalAssets);
+                    Elements netProfitLossCells = totalAssetsRow.select("td");
+                    List<String> listOfValuesFromCells = getListOfValuesFromCells(netProfitLossCells);
+                    List<String> ab = new ArrayList<>();
+                    for(String a : listOfValuesFromCells){
+                        ab.add(a.replace(",","."));
+                    }
+                    totalAssets.addAll(ab);
+                    log.info("TotalAssets: {}", totalAssets);
                 }
 
                 if (
@@ -159,9 +194,16 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
         return Optional.empty();
     }
 
-    private String getValueFromCells(Elements cells) {
+    private List<String> getListOfValuesFromCells(Elements cells) {
         final int size = cells.size();
         log.info("Cells size: {}Fetch from (cells size - 1) {}", size, size - 1);
-        return cells.get(size - 1).text();
+
+        List<String> strings = new ArrayList<>();
+        for(int i = size - 2; i >= 1; i--) {
+            log.info("Cell: {}", cells.get(i).text());
+            strings.add(cells.get(i).text());
+        }
+
+        return strings;
     }
 }
