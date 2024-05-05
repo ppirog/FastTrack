@@ -45,12 +45,12 @@ class FinancialDataFacadeTest {
         assertAll(
                 () -> assertEquals("JEDEN SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ", financialDataResponseDto.companyName()),
                 () -> assertEquals("00000001", financialDataResponseDto.krsNumber()),
-                () -> assertEquals("134.3", financialDataResponseDto.netSalesValues()),
-                () -> assertEquals("230.3", financialDataResponseDto.ebitdaValues()),
-                () -> assertEquals("227.2", financialDataResponseDto.netProfitOrLossValues()),
-                () -> assertEquals("111.6", financialDataResponseDto.liabilitedAndProvisionsValues()),
-                () -> assertEquals("339.5", financialDataResponseDto.equityValues()),
-                () -> assertEquals("181.4", financialDataResponseDto.totalAssetsValues()),
+                () -> assertEquals("134.3", financialDataResponseDto.netSalesValues().get(0)),
+                () -> assertEquals("230.3", financialDataResponseDto.ebitdaValues().get(0)),
+                () -> assertEquals("227.2", financialDataResponseDto.netProfitOrLossValues().get(0)),
+                () -> assertEquals("111.6", financialDataResponseDto.liabilitedAndProvisionsValues().get(0)),
+                () -> assertEquals("339.5", financialDataResponseDto.equityValues().get(0)),
+                () -> assertEquals("181.4", financialDataResponseDto.totalAssetsValues().get(0)),
                 () -> assertEquals(LocalDateTime.of(2024, 1, 1, 1, 1, 1), financialDataResponseDto.fetchDate())
         );
     }
