@@ -92,7 +92,6 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
                 if (netSalesRow != null) {
                     Elements netSalesCells = netSalesRow.select("td");
                     List<String> listOfValuesFromCells = getListOfValuesFromCells(netSalesCells);
-                    listOfValuesFromCells.forEach(s -> s.replace(",","."));
 
                     List<String> ab = new ArrayList<>();
                     for(String a : listOfValuesFromCells){
