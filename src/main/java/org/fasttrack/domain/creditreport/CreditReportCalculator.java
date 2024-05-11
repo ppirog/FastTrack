@@ -3,12 +3,14 @@ package org.fasttrack.domain.creditreport;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @Log4j2
+@Service
 class CreditReportCalculator {
     CreditReport calculateCreditScoring(final FinancialDataResponseDto financialDataResponseDto) {
         int maxScoring = 0;
@@ -125,9 +127,13 @@ class CreditReportCalculator {
 
 
         log.info("Company scoring: {}", companyScoring);
+        log.info("Max scoring: {}", maxScoring);
 
+        double percentageFraction = ((double) companyScoring /(double)  maxScoring);
+        Long percentage = (long) (percentageFraction * 100);
+        log.info("Percentage scoring: {}", percentage);
         return CreditReport.builder()
-                .percentageScore((long) (companyScoring / maxScoring))
+                .percentageScore(percentage)
                 .descriptions(descriptions)
                 .build();
     }

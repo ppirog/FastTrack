@@ -202,8 +202,13 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
 
         List<String> strings = new ArrayList<>();
         for(int i = size - 2; i >= 1; i--) {
-            log.info("Cell: {}", cells.get(i).text());
-            strings.add(cells.get(i).text());
+            final String text = cells.get(i).text();
+            log.info("Cell: {}", text);
+            if(!text.isEmpty()){
+                strings.add(cells.get(i).text());
+            }else{
+                strings.add("0");
+            }
         }
 
         return strings;

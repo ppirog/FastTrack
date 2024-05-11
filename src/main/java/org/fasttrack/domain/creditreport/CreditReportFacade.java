@@ -5,20 +5,21 @@ import lombok.extern.log4j.Log4j2;
 import org.fasttrack.domain.creditreport.dto.CreditReportResponseDto;
 import org.fasttrack.domain.financialdata.FinancialDataFacade;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
+import org.springframework.stereotype.Component;
 
 @Log4j2
 @AllArgsConstructor
+@Component
 public class CreditReportFacade {
 
     private final FinancialDataFacade financialDataFacade;
     private final CreditReportCalculator creditReportCalculator;
+    private final CreditReportMapper creditReportMapper;
 
     public CreditReportResponseDto fetchCreditReportByKrs(String krs){
 
         final FinancialDataResponseDto financialDataResponseDto = financialDataFacade.fetchFinancialDataByKrs(krs);
-        creditReportCalculator.calculateCreditScoring(financialDataResponseDto);
-
-
-        return CreditReportResponseDto.builder().build();
+        final CreditReport creditReport = creditReportCalculator.calculateCreditScoring(financialDataResponseDto);
+        return creditReportMapper.toDto(creditReport);
     }
 }
