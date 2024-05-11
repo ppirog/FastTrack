@@ -158,9 +158,12 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
                 }
 
                 if (
-                        netSales.isEmpty() ||
-                                ebitda.isEmpty() ||
-                                netProfitOrLoss.isEmpty()
+                        netSales.isEmpty() &&
+                                ebitda.isEmpty() &&
+                                netProfitOrLoss.isEmpty() &&
+                                liabilitedAndProvisions.isEmpty() &&
+                                totalAssets.isEmpty() &&
+                                equity.isEmpty()
                 ) {
                     return Optional.empty();
                 }
