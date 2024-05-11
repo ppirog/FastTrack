@@ -1,6 +1,7 @@
 package org.fasttrack.domain.creditreport;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +13,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Builder
 @Entity
@@ -27,6 +30,10 @@ class CreditReport {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    private Long percentageScore;
+
+    @ElementCollection
+    private List<String> descriptions;
 
 
 }
