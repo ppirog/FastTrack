@@ -12,10 +12,10 @@ public record FinancialDataResponseDto(
         String companyName,
 
         List<String> netSalesValues,
-        List<String>  ebitdaValues,
-        List<String>  netProfitOrLossValues,
-        List<String>  liabilitedAndProvisionsValues,
-        List<String>  equityValues,
-        List<String>  totalAssetsValues
+        List<String> ebitdaValues,
+        List<String> netProfitOrLossValues,
+        List<String> liabilitesAndProvisionsValues,
+        List<String> equityValues,
+        List<String> totalAssetsValues
 ) {
 }
