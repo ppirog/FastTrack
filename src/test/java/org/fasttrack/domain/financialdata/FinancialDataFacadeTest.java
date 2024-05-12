@@ -26,7 +26,8 @@ class FinancialDataFacadeTest {
                 new FinancialDataRespositoryTestImpl(),
                 new FinancialDataMapper(
                         LocalDateTime.of(2024,1,1,1,1,1)
-                )
+                ),
+                LocalDateTime.of(2024,1,1,1,1,1)
         );
         when(companyFacade.findCompanyByKrsIfNotExistInDbFetchAndSave("00000001")).thenReturn(
             CompanyResponseDto.builder()
