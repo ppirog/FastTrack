@@ -12,6 +12,7 @@ import java.util.List;
 @Log4j2
 @Service
 class CreditReportCalculator {
+
     CreditReport calculateCreditScoring(final FinancialDataResponseDto financialDataResponseDto) {
         int maxScoring = 0;
         int companyScoring = 0;
@@ -135,6 +136,8 @@ class CreditReportCalculator {
         return CreditReport.builder()
                 .percentageScore(percentage)
                 .descriptions(descriptions)
+                .comapnyName(financialDataResponseDto.companyName())
+                .krsNumber(financialDataResponseDto.krsNumber())
                 .build();
     }
 

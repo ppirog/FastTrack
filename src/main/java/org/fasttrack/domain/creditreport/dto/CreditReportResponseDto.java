@@ -6,6 +6,8 @@ import java.util.List;
 
 @Builder
 public record CreditReportResponseDto(
+        String krsNumber,
+        String comapnyName,
         Long percentageScore,
         List<String> descriptions
 ) {

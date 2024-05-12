@@ -30,6 +30,13 @@ class CreditReport {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(nullable = false)
+    private String krsNumber;
+
+    @Column(nullable = false)
+    private String comapnyName;
+
+    @Column(nullable = false)
     private Long percentageScore;
 
     @ElementCollection
