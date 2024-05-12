@@ -7,6 +7,8 @@ import org.fasttrack.domain.financialdata.FinancialDataFacade;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Log4j2
 @AllArgsConstructor
 @Component
@@ -21,7 +23,18 @@ public class CreditReportFacade {
 
         final FinancialDataResponseDto financialDataResponseDto = financialDataFacade.fetchFinancialDataByKrs(krs);
         final CreditReport creditReport = creditReportCalculator.calculateCreditScoring(financialDataResponseDto);
-        final CreditReport save = creditReportRepository.save(creditReport);
+
+        final List<CreditReport> byKrsNumber = creditReportRepository.findByKrsNumber(krs);
+        if(!byKrsNumber.isEmpty()){
+            final CreditReport report = byKrsNumber.get(0);
+            if(report.equals(creditReport)){
+                return creditReportMapper.toDto(report);
+            }
+        }
+
+
+        CreditReport save ;
+                save = creditReportRepository.save(creditReport);
         return creditReportMapper.toDto(save);
     }
 }
