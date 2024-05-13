@@ -90,7 +90,7 @@ class CreditReportCalculator {
             companyScoring += assetsValuesChanges;
             maxScoring += 5;
             if (assetsValuesChanges <= 2) {
-                descriptions.add("Assers changes are negative");
+                descriptions.add("Assets changes are negative");
             }
         }
 
