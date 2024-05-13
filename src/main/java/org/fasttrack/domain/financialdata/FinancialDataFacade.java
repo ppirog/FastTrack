@@ -9,6 +9,7 @@ import org.fasttrack.domain.financialdata.dto.server.FinancialDataResponseFromSe
 import org.fasttrack.domain.financialdata.exceptions.NotFoundInRemoteServerException;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Log4j2
@@ -20,11 +21,20 @@ public class FinancialDataFacade {
     private final FinancialDataFetchable dataFetchable;
     private final FinancialDataRepository financialDataRepository;
     private final FinancialDataMapper mapper;
+    private final LocalDateTime dateTime;
 
     public FinancialDataResponseDto fetchFinancialDataByKrs(String krs) {
         log.info("Fetching financial data for company with KRS: {}", krs);
         final CompanyResponseDto companyByKrsIfNotExistInDbFetchAndSave = companyFacade.findCompanyByKrsIfNotExistInDbFetchAndSave(krs);
         log.info("Company fetched: {}", companyByKrsIfNotExistInDbFetchAndSave);
+
+        final List<FinancialData> byKrsFromDb = financialDataRepository.findByKrsNumberOrderByFetchDateDesc(krs);
+        if(!byKrsFromDb.isEmpty()){
+            final FinancialData data = byKrsFromDb.get(0);
+            if(data.getFetchDate().getYear() == dateTime.getYear()){
+                return mapper.toDto(data);
+            }
+        }
 
         final String fullName = companyByKrsIfNotExistInDbFetchAndSave.name();
         final FinancialDataResponseFromServerDto financialDataResponseFromServerDto = dataFetchable.fetchFinancialDataByCompanyName(fullName)
@@ -40,14 +50,13 @@ public class FinancialDataFacade {
         if (!byKRSnumberFromDatabase.isEmpty()) {
             if (!byKRSnumberFromDatabase.get(0).areEqualDataExceptFetchDateAndId(entityFromServer)) {
                 saved = financialDataRepository.save(entityFromServer);
-                log.info("Saving to database: {}", saved);
             } else {
                 saved = byKRSnumberFromDatabase.get(0);
             }
         } else {
             saved = financialDataRepository.save(entityFromServer);
-            log.info("Saving to database: {}", saved);
         }
+        log.info("Saving to database: {}", saved);
 
         return mapper.toDto(saved);
     }

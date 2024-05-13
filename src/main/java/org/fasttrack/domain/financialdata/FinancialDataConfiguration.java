@@ -19,9 +19,10 @@ class FinancialDataConfiguration {
             CompanyFacade companyFacade,
             FinancialDataFetchable dataFetchable,
             FinancialDataRepository repository,
-            FinancialDataMapper mapper
+            FinancialDataMapper mapper,
+            LocalDateTime dateTime
     ) {
 
-        return new FinancialDataFacade(companyFacade, dataFetchable, repository, mapper);
+        return new FinancialDataFacade(companyFacade, dataFetchable, repository, mapper, dateTime);
     }
 }

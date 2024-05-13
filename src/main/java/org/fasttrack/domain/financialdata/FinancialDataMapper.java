@@ -39,7 +39,7 @@ class FinancialDataMapper {
                 .netSalesValues(entity.getNetSalesValues().stream().map(String::valueOf).toList())
                 .ebitdaValues(entity.getEbitdaValues().stream().map(String::valueOf).toList())
                 .netProfitOrLossValues(entity.getNetProfitOrLossValues().stream().map(String::valueOf).toList())
-                .liabilitedAndProvisionsValues(entity.getLiabilitesAndProvisionsValues().stream().map(String::valueOf).toList())
+                .liabilitesAndProvisionsValues(entity.getLiabilitesAndProvisionsValues().stream().map(String::valueOf).toList())
                 .equityValues(entity.getEquityValues().stream().map(String::valueOf).toList())
                 .totalAssetsValues(entity.getTotalAssetsValues().stream().map(String::valueOf).toList())
                 .build();
