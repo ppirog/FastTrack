@@ -22,12 +22,13 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -73,9 +74,19 @@ class FastTrackApplicationTests implements SampleCompanyResponse {
     void contextLoads() throws Exception {
 
         wireMockServer.stubFor(
-                WireMock.get("/api/krs/OdpisAktualny/0000121862?rejestr=P&format=json").willReturn(WireMock.aResponse().withStatus(HttpStatus.OK.value()).withHeader("Content-Type", "application/json").withBody(
+                WireMock.get("/api/krs/OdpisAktualny/0000121862?rejestr=P&format=json")
+                        .willReturn(WireMock.aResponse()
+                                .withStatus(HttpStatus.OK.value())
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(
                         getSampleCompanyResponse()
                 )));
+
+        wireMockServer.stubFor(
+                WireMock.get(urlEqualTo("/example-page"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "text/html")
+                        .withBody("<html><head><title>Example Page</title></head><body><h1>Hello, world!</h1></body></html>")));
 
         final String content = mockMvc.perform(get("/company/0000121862"))
                 .andExpect(status().isOk())

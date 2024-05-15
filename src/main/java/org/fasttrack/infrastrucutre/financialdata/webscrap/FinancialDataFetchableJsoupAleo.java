@@ -10,6 +10,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,10 +21,11 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Log4j2
-@Service
+@Component
 public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
 
-    final String ALEO_URl = "https://aleo.com/int/company/";
+    final JSoupConfigurationProperties properties;
+
     final String NET_SALES = "Net sales";
     final String EBITDA = "EBITDA";
     final String NET_PROFIT_OR_LOSS = "Net profit / loss";
@@ -33,6 +36,7 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
 
     @Override
     public Optional<FinancialDataResponseFromServerDto> fetchFinancialDataByCompanyName(final String name) {
+        String aleoUrl  = properties.url();
         String nameToProcess = name;
 
         int count = 0;
@@ -41,7 +45,7 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
 
                 final String parsedCompanyName = companyNameStringParser.parseCompanyName(nameToProcess);
 
-                String url = ALEO_URl + parsedCompanyName;
+                String url = aleoUrl + parsedCompanyName;
                 log.info("PARSED STRING : {}", url);
                 Document doc = Jsoup.connect(url).get();
 

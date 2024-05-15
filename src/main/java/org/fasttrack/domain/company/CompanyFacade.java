@@ -35,7 +35,7 @@ public class CompanyFacade {
 
             try {
                 fetchByKrsFromExternalSerevr = companyFetchable.fetch(krs);
-                log.error(fetchByKrsFromExternalSerevr);
+                log.info(fetchByKrsFromExternalSerevr);
                 final Company save = companyRepository.save(companyMapper.toCompany(fetchByKrsFromExternalSerevr));
                 return companyMapper.toCompanyResponseDto(save);
             } catch (FeignException.FeignClientException feignClientException) {
