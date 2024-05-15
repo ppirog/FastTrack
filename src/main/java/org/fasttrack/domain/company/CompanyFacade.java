@@ -4,6 +4,7 @@ import feign.FeignException;
 import feign.RetryableException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.fasttrack.domain.company.dto.CompanyRequestDto;
 import org.fasttrack.domain.company.dto.CompanyResponseDto;
 import org.fasttrack.domain.company.dto.server.CompanyResponseFromServerDto;
 import org.fasttrack.domain.company.exceptions.NotFoundInDatabaseException;
@@ -68,6 +69,11 @@ public class CompanyFacade {
 
     private Company saveCompany(Company company) {
         return companyRepository.save(company);
+    }
+    public CompanyResponseDto saveCompany(CompanyRequestDto  dto) {
+        final Company company = companyMapper.toCompanyFromRequest(dto);
+        final Company save = saveCompany(company);
+        return companyMapper.toCompanyResponseDto(save);
     }
 
     public List<CompanyResponseDto> findAll() {

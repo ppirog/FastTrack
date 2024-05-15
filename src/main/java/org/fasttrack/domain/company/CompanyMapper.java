@@ -1,6 +1,7 @@
 package org.fasttrack.domain.company;
 
 import lombok.AllArgsConstructor;
+import org.fasttrack.domain.company.dto.CompanyRequestDto;
 import org.fasttrack.domain.company.dto.CompanyResponseDto;
 import org.fasttrack.domain.company.dto.server.CompanyResponseFromServerDto;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,15 @@ class CompanyMapper {
                 .name(company.getName())
                 .legalForm(company.getLegalForm())
                 .KRSnumber(company.getKRSnumber())
+                .build();
+    }
+
+
+    public Company toCompanyFromRequest(CompanyRequestDto companyRequestDto) {
+        return Company.builder()
+                .name(companyRequestDto.name())
+                .legalForm(companyRequestDto.legalForm())
+                .KRSnumber(companyRequestDto.KRSnumber())
                 .build();
     }
 }
