@@ -27,7 +27,7 @@ interface SampleCompanyResponse {
                                          "regon": "00200376400000",
                                          "nip": "5260202393"
                                      },
-                                     "nazwa": "JEDEN SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA",
+                                     "nazwa": "KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA",
                                      "daneOWczesniejszejRejestracji": {
                                          "nazwaPoprzedniegoRejestru": "RHB",
                                          "numerWPoprzednimRejestrze": "21971",
