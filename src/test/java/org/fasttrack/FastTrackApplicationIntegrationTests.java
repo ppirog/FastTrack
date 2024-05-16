@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import lombok.extern.log4j.Log4j2;
+import org.fasttrack.domain.company.CompanyFacade;
 import org.fasttrack.domain.company.dto.CompanyResponseDto;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
 import org.junit.jupiter.api.AfterAll;
@@ -20,7 +21,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
@@ -32,14 +32,15 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Log4j2
 @SpringBootTest
 @ActiveProfiles("test")
 @Testcontainers
 @AutoConfigureMockMvc
-@Log4j2
-class FastTrackApplicationTests implements SampleCompanyResponse, SampleFinanialDataResponse {
-    @Container
+class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, SampleFinanialDataResponse {
+
     private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
+
     private static final String WIRE_MOCK_HOST = "http://localhost";
 
     @RegisterExtension
@@ -52,6 +53,9 @@ class FastTrackApplicationTests implements SampleCompanyResponse, SampleFinanial
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private CompanyFacade companyFacade;
 
     @DynamicPropertySource
     static void postgreSQLProperties(DynamicPropertyRegistry registry) {
@@ -83,15 +87,15 @@ class FastTrackApplicationTests implements SampleCompanyResponse, SampleFinanial
                                 .withStatus(HttpStatus.OK.value())
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(
-                                        getSampleCompanyResponse()
+                                        sampleCompanyFromKrsResponse()
                                 )));
 
         wireMockServer.stubFor(
-                WireMock.get(urlEqualTo( "/kpmg-spolka-z-ograniczona-odpowiedzialnoscia"))
+                WireMock.get(urlEqualTo("/kpmg-spolka-z-ograniczona-odpowiedzialnoscia"))
                         .willReturn(aResponse()
                                 .withStatus(200)
                                 .withHeader("Content-Type", "text/html")
-                                .withBody(geg())));
+                                .withBody(sampleFinancialDataRepsonse())));
 
 
         final String content = mockMvc.perform(get("/company/0000121862"))
@@ -112,11 +116,12 @@ class FastTrackApplicationTests implements SampleCompanyResponse, SampleFinanial
         assertAll(
                 () -> Assertions.assertEquals("0000121862", dto2.krsNumber()),
                 () -> Assertions.assertEquals("KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA", dto2.companyName()),
-                () -> Assertions.assertEquals(List.of("-0.5","0.1","-1.5"), dto2.ebitdaValues()),
+                () -> Assertions.assertEquals(List.of("-0.5", "0.1", "-1.5"), dto2.ebitdaValues()),
                 () -> Assertions.assertEquals(List.of(), dto2.netProfitOrLossValues()),
-                () -> Assertions.assertEquals(List.of("56.7","54.6","52.7"), dto2.equityValues()),
-                () -> Assertions.assertEquals(List.of("52.9","43.4","34.0"), dto2.liabilitesAndProvisionsValues()),
-                () -> Assertions.assertEquals(List.of(), dto2.netSalesValues())
+                () -> Assertions.assertEquals(List.of("56.7", "54.6", "52.7"), dto2.equityValues()),
+                () -> Assertions.assertEquals(List.of("52.9", "43.4", "34.0"), dto2.liabilitesAndProvisionsValues()),
+                () -> Assertions.assertEquals(List.of(), dto2.netSalesValues()),
+                () -> Assertions.assertEquals(1, companyFacade.findAll().size())
         );
     }
 

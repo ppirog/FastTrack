@@ -2,7 +2,7 @@ package org.fasttrack;
 
 interface SampleCompanyResponse {
 
-    default String getSampleCompanyResponse() {
+    default String sampleCompanyFromKrsResponse() {
         return """
                 {
                      "odpis": {
