@@ -68,6 +68,11 @@ class CompanyRepositoryTestImpl implements CompanyRepository {
     }
 
     @Override
+    public boolean existsByKRSnumber(final String KRSnumber) {
+        return false;
+    }
+
+    @Override
     public List<Company> findAllById(final Iterable<Long> longs) {
         return List.of();
     }

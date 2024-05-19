@@ -44,6 +44,7 @@ class CompanyFacadeTest {
         assertEquals(10, companyFacade.findAll().size());
     }
 
+
     @Test
     void fetchCompanyByKrsAndSaveInDatabase() {
 

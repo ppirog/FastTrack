@@ -1,5 +1,6 @@
 package org.fasttrack.infrastrucutre.company.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.fasttrack.domain.company.CompanyFacade;
 import org.fasttrack.domain.company.dto.CompanyRequestDto;
@@ -24,7 +25,7 @@ public class CompanyRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CompanyResponseDto> findOfferByName(@RequestBody CompanyRequestDto dto) {
+    public ResponseEntity<CompanyResponseDto> findOfferByName(@RequestBody @Valid CompanyRequestDto dto) {
         return ResponseEntity.ok(companyFacade.saveCompany(dto));
     }
 
