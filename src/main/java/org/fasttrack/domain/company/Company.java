@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,11 @@ import lombok.Setter;
 @Setter(AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-@Table(name = "company")
+@Table(name = "company"
+        , indexes = {
+        @Index(name = "idx_name_company", columnList = "name"),
+        @Index(name = "idx_krs_number_company", columnList = "KRSnumber")
+})
 class Company {
 
     @Id

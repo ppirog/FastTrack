@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1716150813007-3" author="ppirog (generated)">
+        <createIndex indexName="idx_company_name_credit_report" tableName="credit_report">
+            <column name="comapny_name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1716150813007-4" author="ppirog (generated)">
+        <createIndex indexName="idx_company_name_financial_data" tableName="financial_data">
+            <column name="comapny_name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1716150813007-5" author="ppirog (generated)">
+        <createIndex indexName="idx_krs_number_credit_report" tableName="credit_report">
+            <column name="krs_number"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1716150813007-6" author="ppirog (generated)">
+        <createIndex indexName="idx_krs_number_financial_data" tableName="financial_data">
+            <column name="krs_number"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1716150813007-7" author="ppirog (generated)">
+        <createIndex indexName="idx_name_company" tableName="company">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1716150813007-2" author="ppirog (generated)">
+        <createIndex indexName="idx_krs_number_company" tableName="company" unique="false">
+            <column name="krsnumber"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -32,9 +32,7 @@ public class CreditReportFacade {
             }
         }
 
-
-        CreditReport save ;
-                save = creditReportRepository.save(creditReport);
+        CreditReport save  = creditReportRepository.save(creditReport);
         return creditReportMapper.toDto(save);
     }
 }

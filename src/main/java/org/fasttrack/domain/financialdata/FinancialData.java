@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,11 @@ import java.util.Objects;
 @Setter(AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor
-@Table(name = "financial_data")
+@Table(name = "financial_data"
+        , indexes = {
+        @Index(name = "idx_company_name_financial_data", columnList = "comapnyName"),
+        @Index(name = "idx_krs_number_financial_data", columnList = "krsNumber")
+})
 class FinancialData {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -60,18 +65,19 @@ class FinancialData {
         if (!this.krsNumber.equals(f1.krsNumber)) return false;
         if (!this.comapnyName.equals(f1.comapnyName)) return false;
 
-        if(this.netSalesValues.size() != f1.netSalesValues.size()) return false;
-        if(this.ebitdaValues.size() != f1.ebitdaValues.size()) return false;
-        if(this.netProfitOrLossValues.size() != f1.netProfitOrLossValues.size()) return false;
-        if(this.liabilitesAndProvisionsValues.size() != f1.liabilitesAndProvisionsValues.size()) return false;
-        if(this.equityValues.size() != f1.equityValues.size()) return false;
-        if(this.totalAssetsValues.size() != f1.totalAssetsValues.size()) return false;
+        if (this.netSalesValues.size() != f1.netSalesValues.size()) return false;
+        if (this.ebitdaValues.size() != f1.ebitdaValues.size()) return false;
+        if (this.netProfitOrLossValues.size() != f1.netProfitOrLossValues.size()) return false;
+        if (this.liabilitesAndProvisionsValues.size() != f1.liabilitesAndProvisionsValues.size()) return false;
+        if (this.equityValues.size() != f1.equityValues.size()) return false;
+        if (this.totalAssetsValues.size() != f1.totalAssetsValues.size()) return false;
 
         for (int i = 0; i < this.netSalesValues.size(); i++) {
             if (!Objects.equals(this.netSalesValues.get(i), f1.netSalesValues.get(i))) return false;
             if (!Objects.equals(this.ebitdaValues.get(i), f1.ebitdaValues.get(i))) return false;
             if (!Objects.equals(this.netProfitOrLossValues.get(i), f1.netProfitOrLossValues.get(i))) return false;
-            if (!Objects.equals(this.liabilitesAndProvisionsValues.get(i), f1.liabilitesAndProvisionsValues.get(i))) return false;
+            if (!Objects.equals(this.liabilitesAndProvisionsValues.get(i), f1.liabilitesAndProvisionsValues.get(i)))
+                return false;
             if (!Objects.equals(this.equityValues.get(i), f1.equityValues.get(i))) return false;
             if (!Objects.equals(this.totalAssetsValues.get(i), f1.totalAssetsValues.get(i))) return false;
         }
