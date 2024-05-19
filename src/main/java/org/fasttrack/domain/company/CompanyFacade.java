@@ -16,10 +16,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Log4j2
 @AllArgsConstructor
 @Component
 public class CompanyFacade {
+
 
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
@@ -70,12 +72,18 @@ public class CompanyFacade {
     private Company saveCompany(Company company) {
         return companyRepository.save(company);
     }
-    public CompanyResponseDto saveCompany(CompanyRequestDto  dto) {
-        final Company company = companyMapper.toCompanyFromRequest(dto);
-        final Company save = saveCompany(company);
-        return companyMapper.toCompanyResponseDto(save);
-    }
 
+    public CompanyResponseDto saveCompany(CompanyRequestDto dto) {
+        final Company company = companyMapper.toCompanyFromRequest(dto);
+
+        final String Krs = company.getKRSnumber();
+        if (!companyRepository.existsByKRSnumber(Krs)) {
+            final Company save = companyRepository.save(company);
+            return companyMapper.toCompanyResponseDto(save);
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Company with KRS number: " + Krs + " already exists in database");
+        }
+    }
     public List<CompanyResponseDto> findAll() {
         return companyRepository.findAll()
                 .stream()
