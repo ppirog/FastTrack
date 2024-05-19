@@ -1,9 +1,11 @@
 package org.fasttrack.infrastrucutre.company.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.fasttrack.domain.company.CompanyFacade;
 import org.fasttrack.domain.company.dto.CompanyRequestDto;
 import org.fasttrack.domain.company.dto.CompanyResponseDto;
+import org.hibernate.validator.internal.constraintvalidators.bv.PatternValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/company" )
 public class CompanyRestController {
     private final CompanyFacade companyFacade;
+    private final PatternValidator patternValidator;
 
     @GetMapping("/{krs}")
     public ResponseEntity<CompanyResponseDto> findOfferById(@PathVariable String krs) {
@@ -24,7 +27,7 @@ public class CompanyRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CompanyResponseDto> findOfferByName(@RequestBody CompanyRequestDto dto) {
+    public ResponseEntity<CompanyResponseDto> findOfferByName(@RequestBody @Valid CompanyRequestDto dto) {
         return ResponseEntity.ok(companyFacade.saveCompany(dto));
     }
 
