@@ -3,6 +3,7 @@ package org.fasttrack.infrastrucutre.security;
 import lombok.AllArgsConstructor;
 import org.fasttrack.domain.loginandregister.LoginAndRegisterFacade;
 import org.fasttrack.domain.loginandregister.dto.UserResponseDto;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,9 +21,10 @@ class LoginUserDetailsService implements UserDetailsService {
     }
 
     private org.springframework.security.core.userdetails.User getUser(UserResponseDto dto) {
+        String role = dto.isAdmin() ? "ADMIN" : "USER";
         return new org.springframework.security.core.userdetails.User(
                 dto.username(),
                 dto.password(),
-                Collections.emptyList());
+                Collections.singletonList(new SimpleGrantedAuthority(role)));
     }
 }

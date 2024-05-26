@@ -17,6 +17,7 @@ class UserMapper {
         return UserResponseDto.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
+                .isAdmin(user.isAdmin())
                 .build();
     }
 }

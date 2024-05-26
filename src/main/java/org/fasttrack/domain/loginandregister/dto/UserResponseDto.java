@@ -6,6 +6,7 @@ import lombok.Builder;
 public record UserResponseDto(
         String username,
         String password,
+        boolean isAdmin,
         String message
 ) {
 }

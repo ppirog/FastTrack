@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -42,7 +43,7 @@ class JwtAuthTokenFilter  extends OncePerRequestFilter {
         JWTVerifier verifier = JWT.require(algorithm).build();
 
         DecodedJWT jwt = verifier.verify(token.substring(7));
-
-        return new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, Collections.emptyList());
+        String role = jwt.getClaim("role").asString();
+        return new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role)));
     }
 }

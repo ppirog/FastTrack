@@ -14,13 +14,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Getter(AccessLevel.PACKAGE)
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "app_user")
@@ -36,9 +39,16 @@ class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "is_admin", nullable = false)
+    private boolean isAdmin = false;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        if (isAdmin) {
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
 
     @Override
