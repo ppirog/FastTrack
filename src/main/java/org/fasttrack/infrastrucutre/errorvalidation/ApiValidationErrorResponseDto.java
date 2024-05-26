@@ -1,4 +1,4 @@
-package org.fasttrack.infrastrucutre.apivalidation;
+package org.fasttrack.infrastrucutre.errorvalidation;
 
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
