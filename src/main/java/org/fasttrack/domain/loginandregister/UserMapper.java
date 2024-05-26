@@ -16,6 +16,7 @@ class UserMapper {
     UserResponseDto mapToUserResponseDto(User user){
         return UserResponseDto.builder()
                 .username(user.getUsername())
+                .password(user.getPassword())
                 .build();
     }
 }
