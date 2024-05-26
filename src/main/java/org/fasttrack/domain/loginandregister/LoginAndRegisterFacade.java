@@ -18,7 +18,7 @@ public class LoginAndRegisterFacade {
     public UserResponseDto register(UserRequestDto requestDto) {
         final User user = userMapper.mapToUser(requestDto);
         final User saved = userRepository.save(user);
-        return userMapper.mapToUserResponseDto(user);
+        return userMapper.mapToUserResponseDto(saved);
     }
 
     public UserResponseDto findByUsername(String username) {
