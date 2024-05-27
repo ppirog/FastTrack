@@ -81,6 +81,14 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
     @Test
     void happy_path() throws Exception {
 
+        /* step 1 user made POST request to /register endpoint with data someUser and somePassword and status is 201
+        *  step 2 user made POST request to /register endpoint with data someUser and somePassword and status is 409
+        *  step 3 user made GET request to /company/{krs} with 0000121862 and received status 200 with response krs 0000121862, formaPrawna SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA, and companyName KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA
+        *  step 4 user made GET request to /company/{krs} with 0000000000 and received status 404
+        *  step 5 user made GET request to /financialData/{krs} with 0000121862 and received financial data
+        *  step 6 user made GET request to /creditReport/{krs} and received response 200 with sample credit report
+        * */
+
         wireMockServer.stubFor(
                 WireMock.get("/api/krs/OdpisAktualny/0000121862?rejestr=P&format=json")
                         .willReturn(WireMock.aResponse()
