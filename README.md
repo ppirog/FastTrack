@@ -40,8 +40,6 @@ Apllication fetch company data from government REST API, financial data from ale
 ![image](https://github.com/ppirog/FastTrack/assets/126290295/ead2c67f-a675-42cf-b137-e125ca1771d9)
 ![image](https://github.com/ppirog/FastTrack/assets/126290295/803af192-65bd-4bcf-af8a-e3ec5aaa02aa)
 
-
-
 # Frontend
 
 Frontend to this app: https://github.com/ppirog/FastTrack-front
@@ -51,6 +49,7 @@ Frontend to this app: https://github.com/ppirog/FastTrack-front
 - Spring
 - Hibernate 
 - PostgreSql
+- Liquibase
 - Redis
 - Spring Security
 - Docker
