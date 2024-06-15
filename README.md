@@ -21,6 +21,9 @@
 	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/192158954-f88b5814-d510-4564-b285-dff7d6400dad.png" alt="HTML" title="HTML"/></code>
 </div>
 
+# Livedemo
+https://youtu.be/B7XfYUlUSR0
+
 # Info
 
 Apllication fetch company data from government REST API, financial data from aleo.com using webscraping technique (JSOUP) and returns credit scoring based on gathered informations.
@@ -40,8 +43,6 @@ Apllication fetch company data from government REST API, financial data from ale
 ![image](https://github.com/ppirog/FastTrack/assets/126290295/ead2c67f-a675-42cf-b137-e125ca1771d9)
 ![image](https://github.com/ppirog/FastTrack/assets/126290295/803af192-65bd-4bcf-af8a-e3ec5aaa02aa)
 
-
-
 # Frontend
 
 Frontend to this app: https://github.com/ppirog/FastTrack-front
@@ -51,6 +52,7 @@ Frontend to this app: https://github.com/ppirog/FastTrack-front
 - Spring
 - Hibernate 
 - PostgreSql
+- Liquibase
 - Redis
 - Spring Security
 - Docker
