@@ -23,7 +23,7 @@
 
 # Info
 
-Apllication fetch company data from government API, financial data from aleo.com and returns credit scoring based on gathered informations.
+Apllication fetch company data from government REST API, financial data from aleo.com using webscraping technique (JSOUP) and returns credit scoring based on gathered informations.
 
 # Showcase of application
 ![image](https://github.com/ppirog/FastTrack/assets/126290295/428efadd-612a-4418-bc3e-6050eaf387a2)
@@ -55,6 +55,8 @@ Frontend to this app: https://github.com/ppirog/FastTrack-front
 - Spring Security
 - Docker
 - JWT
+- Jsoup
+- Rest
 # Testing:
 - JUnit  
 - AssertJ
@@ -63,7 +65,7 @@ Frontend to this app: https://github.com/ppirog/FastTrack-front
 - Wiremock
 - MockMvc
 
-# Architecture
+# Modular Monolith Architecture 
 ![image](https://github.com/ppirog/FastTrack/assets/126290295/08292909-a918-4867-9022-1970b5989bf7)
 
 
