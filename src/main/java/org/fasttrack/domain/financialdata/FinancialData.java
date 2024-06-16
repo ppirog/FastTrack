@@ -36,7 +36,7 @@ class FinancialData {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private LocalDateTime fetchDate;
 
     @Column(nullable = false)
