@@ -63,8 +63,6 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private CompanyFacade companyFacade;
 
     @DynamicPropertySource
     static void postgreSQLProperties(DynamicPropertyRegistry registry) {
@@ -117,33 +115,6 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
                                 .withStatus(200)
                                 .withHeader("Content-Type", "text/html")
                                 .withBody(sampleFinancialDataRepsonse())));
-
-
-//        final String content = mockMvc.perform(get("/company/0000121862"))
-//                .andExpect(status().isOk())
-//                .andReturn().getResponse().getContentAsString();
-//        final CompanyResponseDto dto1 = objectMapper.readValue(content, CompanyResponseDto.class);
-//
-//        assertAll(
-//                () -> Assertions.assertEquals("0000121862", dto1.KRSnumber()),
-//                () -> Assertions.assertEquals("SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA", dto1.legalForm()),
-//                () -> Assertions.assertEquals("KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA", dto1.name())
-//        );
-//
-//        final String content2 = mockMvc.perform(get("/financialData/0000121862"))
-//                .andReturn().getResponse().getContentAsString();
-//        final FinancialDataResponseDto dto2 = objectMapper.readValue(content2, FinancialDataResponseDto.class);
-//
-//        assertAll(
-//                () -> Assertions.assertEquals("0000121862", dto2.krsNumber()),
-//                () -> Assertions.assertEquals("KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA", dto2.companyName()),
-//                () -> Assertions.assertEquals(List.of("-0.5", "0.1", "-1.5"), dto2.ebitdaValues()),
-//                () -> Assertions.assertEquals(List.of(), dto2.netProfitOrLossValues()),
-//                () -> Assertions.assertEquals(List.of("56.7", "54.6", "52.7"), dto2.equityValues()),
-//                () -> Assertions.assertEquals(List.of("52.9", "43.4", "34.0"), dto2.liabilitesAndProvisionsValues()),
-//                () -> Assertions.assertEquals(List.of(), dto2.netSalesValues()),
-//                () -> Assertions.assertEquals(1, companyFacade.findAll().size())
-//        );
 
 
 
