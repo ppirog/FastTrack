@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import lombok.extern.log4j.Log4j2;
-import org.fasttrack.domain.company.CompanyFacade;
 import org.fasttrack.domain.company.dto.CompanyResponseDto;
 import org.fasttrack.domain.creditreport.dto.CreditReportResponseDto;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
