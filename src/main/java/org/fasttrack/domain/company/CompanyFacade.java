@@ -33,13 +33,17 @@ public class CompanyFacade {
         if (byKRSnumberFromDb.isPresent()) {
             return companyMapper.toCompanyResponseDto(byKRSnumberFromDb.get());
         } else {
-            final CompanyResponseFromServerDto fetchByKrsFromExternalSerevr;
+            CompanyResponseFromServerDto fetchByKrsFromExternalSerevr;
 
             try {
                 fetchByKrsFromExternalSerevr = companyFetchable.fetch(krs);
                 log.info(fetchByKrsFromExternalSerevr);
-                final Company save = companyRepository.save(companyMapper.toCompany(fetchByKrsFromExternalSerevr));
-                return companyMapper.toCompanyResponseDto(save);
+                if (fetchByKrsFromExternalSerevr != null) {
+                    final Company save = companyRepository.save(companyMapper.toCompany(fetchByKrsFromExternalSerevr));
+                    return companyMapper.toCompanyResponseDto(save);
+                } else {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found in external server");
+                }
             } catch (FeignException.FeignClientException feignClientException) {
                 log.error("Company not found in external server: {}", feignClientException.getMessage());
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company not found in external server", feignClientException);
@@ -84,6 +88,7 @@ public class CompanyFacade {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Company with KRS number: " + Krs + " already exists in database");
         }
     }
+
     public List<CompanyResponseDto> findAll() {
         return companyRepository.findAll()
                 .stream()

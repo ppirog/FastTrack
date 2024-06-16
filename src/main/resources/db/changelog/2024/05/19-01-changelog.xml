@@ -30,10 +30,10 @@
             <column name="name"/>
         </createIndex>
     </changeSet>
-    <changeSet id="1716150813007-2" author="ppirog (generated)">
-        <createIndex indexName="idx_krs_number_company" tableName="company" unique="false">
-            <column name="krsnumber"/>
-        </createIndex>
-    </changeSet>
+<!--    <changeSet id="1716150813007-2" author="ppirog (generated)">-->
+<!--        <createIndex indexName="idx_krs_number_company" tableName="company" unique="false">-->
+<!--            <column name="krsnumber"/>-->
+<!--        </createIndex>-->
+<!--    </changeSet>-->
 
 </databaseChangeLog>

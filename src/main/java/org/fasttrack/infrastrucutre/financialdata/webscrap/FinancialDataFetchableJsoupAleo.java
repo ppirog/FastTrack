@@ -10,9 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
 
     final String NET_SALES = "Net sales";
     final String EBITDA = "EBITDA";
-    final String NET_PROFIT_OR_LOSS = "Net profit / loss";
+    final String NET_PROFIT = "Net profit";
     final String LIABILITIES_AND_PROVISIONS = "Liabilities and provisions";
     final String EQUITY = "Equity";
     final String TOTAL_ASSETS = "Total assets";
@@ -77,7 +75,7 @@ public class FinancialDataFetchableJsoupAleo implements FinancialDataFetchable {
 
                 Element ebitdaRow = doc.select("tr:contains(" + EBITDA + ")").first();
 
-                Element netProfitLossRow = doc.select("tr:contains(" + NET_PROFIT_OR_LOSS + ")").first();
+                Element netProfitLossRow = doc.select("tr:contains(" + NET_PROFIT + ")").first();
 
                 Element liabilitiesRow = doc.select("tr:contains(" + LIABILITIES_AND_PROVISIONS + ")").first();
 
