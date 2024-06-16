@@ -5,9 +5,13 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import lombok.extern.log4j.Log4j2;
 import org.fasttrack.domain.company.CompanyFacade;
+import org.fasttrack.domain.company.dto.CompanyResponseDto;
+import org.fasttrack.domain.creditreport.dto.CreditReportResponseDto;
+import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
 import org.fasttrack.infrastrucutre.errorvalidation.dto.DuplicateKeyExceptionDto;
 import org.fasttrack.infrastrucutre.security.dto.JwtResponseDto;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -24,6 +28,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -32,6 +37,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -190,8 +196,92 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
         final String login = jwtResponseDto.login();
         final String token = jwtResponseDto.token();
         assertAll(
-                () -> assertEquals(login,"someUser"),
+                () -> assertEquals(login, "someUser"),
                 () -> assertThat(token).matches(Pattern.compile("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*$"))
+        );
+
+
+
+        //step 4 user made GET request to /company/{krs} (no token) with 0000121862 and received status UNAUTHORIZED
+        mockMvc.perform(get("/company/0000121862"))
+                .andExpect(status().isUnauthorized());
+
+
+
+        //step 5 user made GET request to /company/{krs} (with token) with 0000121862 and received status 200 with response krs 0000121862, formaPrawna SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA, and companyName KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA
+        final MvcResult resultStep5 = mockMvc.perform(get("/company/0000121862")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk()).andReturn();
+
+
+        final CompanyResponseDto companyResponseDto = objectMapper.readValue(resultStep5.getResponse().getContentAsString(), CompanyResponseDto.class);
+        assertAll(
+                () -> assertEquals(companyResponseDto.KRSnumber(), "0000121862"),
+                () -> assertEquals(companyResponseDto.legalForm(), "SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA"),
+                () -> assertEquals(companyResponseDto.name(), "KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA")
+        );
+
+
+
+        //step 6 user made GET request to /company/{krs} with 0000000000 and received status 404
+        mockMvc.perform(get("/company/0000000000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isNotFound());
+
+
+
+        //step 7 user made GET request to /financialData/{krs} (no token) with 0000121862 and received status UNAUTHORIZED
+        mockMvc.perform(get("/financialData/0000121862"))
+                .andExpect(status().isUnauthorized());
+
+
+
+        //step 8 user made GET request to /financialData/{krs} (with token) with 0000121862 and received financial data
+        final MvcResult resultStep8 = mockMvc.perform(get("/financialData/0000121862")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk()).andReturn();
+
+        final FinancialDataResponseDto financialDataResponseDto = objectMapper.readValue(resultStep8.getResponse().getContentAsString(), FinancialDataResponseDto.class);
+        assertAll(
+                () -> Assertions.assertEquals("0000121862", financialDataResponseDto.krsNumber()),
+                () -> Assertions.assertEquals("KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA", financialDataResponseDto.companyName()),
+                () -> Assertions.assertEquals(List.of("-0.5", "0.1", "-1.5"), financialDataResponseDto.ebitdaValues()),
+                () -> Assertions.assertEquals(List.of("2.1", "1.9", "1.1"), financialDataResponseDto.netProfitOrLossValues()),
+                () -> Assertions.assertEquals(List.of("56.7", "54.6", "52.7"), financialDataResponseDto.equityValues()),
+                () -> Assertions.assertEquals(List.of("52.9", "43.4", "34.0"), financialDataResponseDto.liabilitesAndProvisionsValues()),
+                () -> Assertions.assertEquals(List.of(), financialDataResponseDto.netSalesValues())
+        );
+
+
+
+        //step 9 user made GET request to /creditReport/{krs} (no token) and received status UNAUTHORIZED
+        mockMvc.perform(get("/creditReport/0000121862"))
+                .andExpect(status().isUnauthorized());
+
+
+
+        //step 10 step 10 user made GET request to /creditReport/{krs} (with token) and received credit report
+        final MvcResult resultStep10 = mockMvc.perform(get("/creditReport/0000121862")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        final CreditReportResponseDto creditReportResponseDto = objectMapper.readValue(resultStep10.getResponse().getContentAsString(), CreditReportResponseDto.class);
+        assertAll(
+                () -> assertEquals(creditReportResponseDto.krsNumber(), "0000121862"),
+                () -> assertEquals(creditReportResponseDto.comapnyName(), "KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA"),
+                () -> assertEquals(creditReportResponseDto.percentageScore(), 64),
+                () -> assertEquals(creditReportResponseDto.descriptions(),
+                        List.of(
+                                "EBITDA values are negative",
+                                "EBITDA changes are negative",
+                                "Assets changes are negative",
+                                "Liabilities are increasing")
+                )
         );
 
     }
