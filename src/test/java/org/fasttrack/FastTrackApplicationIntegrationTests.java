@@ -5,6 +5,8 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import lombok.extern.log4j.Log4j2;
 import org.fasttrack.domain.company.CompanyFacade;
+import org.fasttrack.infrastrucutre.errorvalidation.dto.DuplicateKeyExceptionDto;
+import org.fasttrack.infrastrucutre.security.dto.JwtResponseDto;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,14 +20,18 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.regex.Pattern;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -79,16 +85,16 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
     void happy_path() throws Exception {
 
         /* step 1 user made POST request to /register endpoint with data someUser and somePassword and status is 201
-        *  step 2 user made POST request to /register endpoint with data someUser and somePassword and status is 409, message = "login already exists"
-        *  step 3 user made POST request to /login endpoint with data someUser and somePassword and received status 200 with token
-        *  step 4 user made GET request to /company/{krs} (no token) with 0000121862 and received status UNAUTHORIZED
-        *  step 5 user made GET request to /company/{krs} (with token) with 0000121862 and received status 200 with response krs 0000121862, formaPrawna SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA, and companyName KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA
-        *  step 6 user made GET request to /company/{krs} with 0000000000 and received status 404
-        *  step 7 user made GET request to /financialData/{krs} (no token) with 0000121862 and received status UNAUTHORIZED
-        *  step 8 user made GET request to /financialData/{krs} (with token) with 0000121862 and received financial data
-        *  step 9 user made GET request to /creditReport/{krs} (no token) and received status UNAUTHORIZED
-        *  step 10 user made GET request to /creditReport/{krs} (with token) and received credit report
-        * */
+         *  step 2 user made POST request to /register endpoint with data someUser and somePassword and status is 409, message = "Login already exists"
+         *  step 3 user made POST request to /login endpoint with data someUser and somePassword and received status 200 with token
+         *  step 4 user made GET request to /company/{krs} (no token) with 0000121862 and received status UNAUTHORIZED
+         *  step 5 user made GET request to /company/{krs} (with token) with 0000121862 and received status 200 with response krs 0000121862, formaPrawna SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA, and companyName KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA
+         *  step 6 user made GET request to /company/{krs} with 0000000000 and received status 404
+         *  step 7 user made GET request to /financialData/{krs} (no token) with 0000121862 and received status UNAUTHORIZED
+         *  step 8 user made GET request to /financialData/{krs} (with token) with 0000121862 and received financial data
+         *  step 9 user made GET request to /creditReport/{krs} (no token) and received status UNAUTHORIZED
+         *  step 10 user made GET request to /creditReport/{krs} (with token) and received credit report
+         * */
 
         wireMockServer.stubFor(
                 WireMock.get("/api/krs/OdpisAktualny/0000121862?rejestr=P&format=json")
@@ -133,15 +139,61 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
 //                () -> Assertions.assertEquals(1, companyFacade.findAll().size())
 //        );
 
+
+
         // step 1  user made POST request to /register endpoint with data someUser and somePassword and status is 201
         mockMvc.perform(post("/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                        {
-                        "username": "someUser",
-                        "password": "somePassword"
-                        }
-                        """));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                "username": "someUser",
+                                "password": "somePassword"
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+
+
+        //step 2 user made POST request to /register endpoint with data someUser and somePassword and status is 409, message = "Login already exists"
+        final MvcResult resultStep2 = mockMvc.perform(post("/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                "username": "someUser",
+                                "password": "somePassword"
+                                }
+                                """))
+                .andExpect(status().isConflict())
+                .andReturn();
+
+        final DuplicateKeyExceptionDto duplicateKeyExceptionDto = objectMapper.readValue(resultStep2.getResponse().getContentAsString(), DuplicateKeyExceptionDto.class);
+
+        assertAll(
+                () -> assertEquals(duplicateKeyExceptionDto.message(), "Login already exists")
+        );
+
+
+
+        // step 3 user made POST request to /login endpoint with data someUser and somePassword and received status 200 with token
+        final MvcResult resultStep3 = mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                "username": "someUser",
+                                "password": "somePassword"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        final JwtResponseDto jwtResponseDto = objectMapper.readValue(resultStep3.getResponse().getContentAsString(), JwtResponseDto.class);
+        final String login = jwtResponseDto.login();
+        final String token = jwtResponseDto.token();
+        assertAll(
+                () -> assertEquals(login,"someUser"),
+                () -> assertThat(token).matches(Pattern.compile("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*$"))
+        );
+
     }
 
 }
