@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.fasttrack.domain.loginandregister.LoginAndRegisterFacade;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -47,6 +48,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/register/**").permitAll()
                         .requestMatchers("/delete/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/creditReport/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/creditReport").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
