@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.FluentQuery;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -172,5 +173,19 @@ class CreditReportRepositoryTestImpl implements CreditReportRepository {
         return database.values().stream()
                 .filter(company -> company.getKrsNumber().equals(krsNumber))
                 .toList();
+    }
+
+    @Override
+    public long deleteByKrsNumber(final String krsNumber) {
+    //fetch key based on value
+        Long key = database.entrySet().stream()
+                .filter(entry -> entry.getValue().getKrsNumber().equals(krsNumber))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+
+        database.remove(key);
+        //        return database.values().removeIf(company -> company.getKrsNumber().equals(krsNumber)) ? 1 : 0;
+        return (long) key;
     }
 }

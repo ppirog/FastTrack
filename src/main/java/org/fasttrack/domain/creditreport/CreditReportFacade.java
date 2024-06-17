@@ -46,6 +46,6 @@ public class CreditReportFacade {
 
     public DeleteCreditReportResponseDto deleteCreditReportByKrs(final String krs) {
         final long deletedCreditReports = creditReportRepository.deleteByKrsNumber(krs);
-        return DeleteCreditReportResponseDto.builder().deletedCreditReports(deletedCreditReports).build();
+        return DeleteCreditReportResponseDto.builder().deletedCreditReport(deletedCreditReports).build();
     }
 }
