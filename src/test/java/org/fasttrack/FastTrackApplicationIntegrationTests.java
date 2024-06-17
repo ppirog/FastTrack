@@ -37,7 +37,6 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -126,6 +125,7 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
                                 .withBody(sampleFinancialDataRepsonse())));
 
 
+
         // step 1  user made POST request to /register endpoint with data someUser and somePassword and status is 201
         mockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -136,6 +136,7 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
                                 }
                                 """))
                 .andExpect(status().isCreated());
+
 
 
         //step 2 user made POST request to /register endpoint with data someUser and somePassword and status is 409, message = "Login already exists"
@@ -155,6 +156,7 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
         assertAll(
                 () -> assertEquals(duplicateKeyExceptionDto.message(), "Login already exists")
         );
+
 
 
         // step 3 user made POST request to /login endpoint with data someUser and somePassword and received status 200 with token
@@ -178,9 +180,11 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
         );
 
 
+
         //step 4 user made GET request to /company/{krs} (no token) with 0000121862 and received status UNAUTHORIZED
         mockMvc.perform(get("/company/0000121862"))
                 .andExpect(status().isUnauthorized());
+
 
 
         //step 5 user made GET request to /company/{krs} (with token) with 0000121862 and received status 200 with response krs 0000121862, formaPrawna SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA, and companyName KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA
@@ -198,6 +202,7 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
         );
 
 
+
         //step 6 user made GET request to /company/{krs} with 0000000000 and received status 404
         mockMvc.perform(get("/company/0000000000")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -205,9 +210,11 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
                 .andExpect(status().isNotFound());
 
 
+
         //step 7 user made GET request to /financialData/{krs} (no token) with 0000121862 and received status UNAUTHORIZED
         mockMvc.perform(get("/financialData/0000121862"))
                 .andExpect(status().isUnauthorized());
+
 
 
         //step 8 user made GET request to /financialData/{krs} (with token) with 0000121862 and received financial data
@@ -228,9 +235,11 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
         );
 
 
+
         //step 9 user made GET request to /creditReport/{krs} (no token) and received status UNAUTHORIZED
         mockMvc.perform(get("/creditReport/0000121862"))
                 .andExpect(status().isUnauthorized());
+
 
 
         //step 10 step 10 user made GET request to /creditReport/{krs} (with token) and received credit report
@@ -255,6 +264,7 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
         );
 
 
+
         //step 11 user made DELETE request to /creditReport/{krs} (with token) and received status UNAUTHORIZED
         mockMvc.perform(delete("/creditReport/0000121862")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -263,11 +273,13 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
                 .andExpect(status().isForbidden());
 
 
+
         //step 12 user made GET request to /creditReport (with token) and received status UNAUTHORIZED
         mockMvc.perform(get("/creditReport")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isForbidden());
+
 
 
         //step 12a created admin user with login admin and password admin
@@ -298,6 +310,7 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
         final String tokenAdmin = jwtResponseDtoAdmin.token();
 
 
+
         //step 13 admin made GET request to /creditReport (with token) and received list of credit reports
         final MvcResult resultStep13 = mockMvc.perform(get("/creditReport")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -321,11 +334,13 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
         );
 
 
+
         //step 14 user made DELETE request to /creditReport/{krs} (with token) and received status UNAUTHORIZED
         mockMvc.perform(delete("/creditReport/0000121862")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isForbidden());
+
 
 
         //step 15 admin made DELETE request to /creditReport/{krs} (with token) and received status 200
@@ -335,5 +350,4 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
                 .andExpect(status().isOk());
 
     }
-
 }
