@@ -47,6 +47,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/register/**").permitAll()
                         .requestMatchers("/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/creditReport").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
