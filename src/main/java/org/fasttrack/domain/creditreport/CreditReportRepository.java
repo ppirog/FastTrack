@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface CreditReportRepository extends JpaRepository<CreditReport, Long> {
+interface CreditReportRepository extends JpaRepository<CreditReport, Long> {
     List<CreditReport> findByKrsNumber(String krsNumber);
 
     @Transactional
