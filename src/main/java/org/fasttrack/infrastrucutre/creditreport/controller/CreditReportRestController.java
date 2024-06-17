@@ -3,6 +3,7 @@ package org.fasttrack.infrastrucutre.creditreport.controller;
 import lombok.AllArgsConstructor;
 import org.fasttrack.domain.creditreport.CreditReportFacade;
 import org.fasttrack.domain.creditreport.dto.CreditReportResponseDto;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,7 @@ public class CreditReportRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CreditReportResponseDto>> fetchAllCreditReports(Pageable pageable) {
+    public ResponseEntity<List<CreditReportResponseDto>> fetchAllCreditReports(@PageableDefault(size = 5) Pageable pageable) {
         return ResponseEntity.ok(creditReportFacade.fetchAllCreditReports(pageable));
     }
 }
