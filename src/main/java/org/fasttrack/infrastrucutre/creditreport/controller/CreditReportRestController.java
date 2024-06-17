@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -19,5 +21,10 @@ public class CreditReportRestController {
     @GetMapping("/{krs}")
     public ResponseEntity<CreditReportResponseDto> fetchCreditReportByKrs(@PathVariable String krs) {
         return ResponseEntity.ok(creditReportFacade.fetchCreditReportByKrs(krs));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CreditReportResponseDto>> fetchAllCreditReports(Pageable pageable) {
+        return ResponseEntity.ok(creditReportFacade.fetchAllCreditReports(pageable));
     }
 }
