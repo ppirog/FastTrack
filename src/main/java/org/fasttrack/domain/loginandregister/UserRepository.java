@@ -14,4 +14,18 @@ interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("delete from User u where u.username = ?1")
     void deleteByUsername(String username);
+
+    default void updateIsAdminByUsername(String username, boolean isAdmin) {
+        Optional<User> optionalUser = findByUsername(username);
+        optionalUser.ifPresent(
+                user -> {
+                    User a = User.builder()
+                            .username(user.getUsername())
+                            .password(user.getPassword())
+                            .isAdmin(isAdmin)
+                            .build();
+                    delete(user);
+                    save(a);
+                });
+    }
 }

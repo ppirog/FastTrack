@@ -35,4 +35,8 @@ public class LoginAndRegisterFacade {
         userRepository.deleteByUsername(username);
         return userMapper.mapToUserResponseDto(deleted);
     }
+
+    public void changeUserRole(String username, boolean isAdmin) {
+        userRepository.updateIsAdminByUsername(username, isAdmin);
+    }
 }

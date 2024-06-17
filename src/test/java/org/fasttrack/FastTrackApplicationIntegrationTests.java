@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.fasttrack.domain.company.dto.CompanyResponseDto;
 import org.fasttrack.domain.creditreport.dto.CreditReportResponseDto;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
+import org.fasttrack.domain.loginandregister.LoginAndRegisterFacade;
 import org.fasttrack.infrastrucutre.errorvalidation.dto.DuplicateKeyExceptionDto;
 import org.fasttrack.infrastrucutre.security.dto.JwtResponseDto;
 import org.junit.jupiter.api.AfterAll;
@@ -36,6 +37,8 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,7 +64,8 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
 
     @Autowired
     private MockMvc mockMvc;
-
+    @Autowired
+    private LoginAndRegisterFacade loginAndRegisterFacade;
 
     @DynamicPropertySource
     static void postgreSQLProperties(DynamicPropertyRegistry registry) {
@@ -99,6 +103,7 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
          *  step 10 user made GET request to /creditReport/{krs} (with token) and received credit report
          *  step 11 user made DELETE request to /creditReport/{krs} (with token) and received status UNAUTHORIZED
          *  step 12 user made GET request to /creditReport (with token) and received status UNAUTHORIZED
+         *  step 12a created admin user with login admin and password admin
          *  step 13 admin made GET request to /creditReport (with token) and received list of credit reports
          *  step 14 user made DELETE request to /creditReport/{krs} (with token) and received status UNAUTHORIZED
          *  step 15 admin made DELETE request to /creditReport/{krs} (with token) and received status 200
@@ -248,6 +253,86 @@ class FastTrackApplicationIntegrationTests implements SampleCompanyResponse, Sam
                                 "Liabilities are increasing")
                 )
         );
+
+
+        //step 11 user made DELETE request to /creditReport/{krs} (with token) and received status UNAUTHORIZED
+        mockMvc.perform(delete("/creditReport/0000121862")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
+                )
+                .andExpect(status().isForbidden());
+
+
+        //step 12 user made GET request to /creditReport (with token) and received status UNAUTHORIZED
+        mockMvc.perform(get("/creditReport")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isForbidden());
+
+
+        //step 12a created admin user with login admin and password admin
+        mockMvc.perform(post("/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                "username": "admin",
+                                "password": "admin"
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        loginAndRegisterFacade.changeUserRole("admin", true);
+
+        final MvcResult resultStep12a = mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                "username": "admin",
+                                "password": "admin"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        final JwtResponseDto jwtResponseDtoAdmin = objectMapper.readValue(resultStep12a.getResponse().getContentAsString(), JwtResponseDto.class);
+        final String tokenAdmin = jwtResponseDtoAdmin.token();
+
+
+        //step 13 admin made GET request to /creditReport (with token) and received list of credit reports
+        final MvcResult resultStep13 = mockMvc.perform(get("/creditReport")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenAdmin))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        final CreditReportResponseDto[] creditReportResponseDtos = objectMapper.readValue(resultStep13.getResponse().getContentAsString(), CreditReportResponseDto[].class);
+        assertAll(
+                () -> assertEquals(creditReportResponseDtos.length, 1),
+                () -> assertEquals(creditReportResponseDtos[0].krsNumber(), "0000121862"),
+                () -> assertEquals(creditReportResponseDtos[0].comapnyName(), "KPMG SPOLKA Z OGRANICZONA ODPOWIEDZIALNOSCIA"),
+                () -> assertEquals(creditReportResponseDtos[0].percentageScore(), 64),
+                () -> assertEquals(creditReportResponseDtos[0].descriptions(),
+                        List.of(
+                                "EBITDA values are negative",
+                                "EBITDA changes are negative",
+                                "Assets changes are negative",
+                                "Liabilities are increasing")
+                )
+        );
+
+
+        //step 14 user made DELETE request to /creditReport/{krs} (with token) and received status UNAUTHORIZED
+        mockMvc.perform(delete("/creditReport/0000121862")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isForbidden());
+
+
+        //step 15 admin made DELETE request to /creditReport/{krs} (with token) and received status 200
+        mockMvc.perform(delete("/creditReport/0000121862")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + tokenAdmin))
+                .andExpect(status().isOk());
 
     }
 
