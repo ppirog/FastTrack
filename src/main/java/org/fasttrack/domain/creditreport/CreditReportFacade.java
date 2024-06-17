@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.fasttrack.domain.creditreport.dto.CreditReportResponseDto;
 import org.fasttrack.domain.financialdata.FinancialDataFacade;
 import org.fasttrack.domain.financialdata.dto.FinancialDataResponseDto;
+import org.fasttrack.infrastrucutre.creditreport.dto.DeleteCreditReportResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -41,5 +42,10 @@ public class CreditReportFacade {
     public List<CreditReportResponseDto> fetchAllCreditReports(Pageable pageable) {
         final List<CreditReport> list = creditReportRepository.findAll(pageable).stream().toList();
         return list.stream().map(creditReportMapper::toDto).collect(Collectors.toList());
+    }
+
+    public DeleteCreditReportResponseDto deleteCreditReportByKrs(final String krs) {
+        final long deletedCreditReports = creditReportRepository.deleteByKrsNumber(krs);
+        return DeleteCreditReportResponseDto.builder().deletedCreditReports(deletedCreditReports).build();
     }
 }

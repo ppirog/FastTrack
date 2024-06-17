@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface CreditReportRepository extends JpaRepository<CreditReport, Long> {
     List<CreditReport> findByKrsNumber(String krsNumber);
+
+    long deleteByKrsNumber(String krsNumber);
 }
